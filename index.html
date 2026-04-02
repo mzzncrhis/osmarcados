@@ -462,15 +462,139 @@
   @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
   @keyframes fadeUp   { from { opacity:0; transform:translateY(30px);  } to { opacity:1; transform:translateY(0); } }
 
-  @media (max-width: 900px) {
-    .party-grid { flex-direction: column; max-width: 400px; }
-    .char-card-outer { border-right: 1px solid rgba(201,168,76,0.12); border-bottom: none; }
-    .char-card-outer:last-child { border-bottom: 1px solid rgba(201,168,76,0.12); }
-    .char-card-outer.flipped { flex: 2; }
-    .char-card-inner { min-height: 500px; }
+  /* =============================================
+     RESPONSIVIDADE — 3 breakpoints
+     ============================================= */
+
+  /* TABLET / JANELA MINIMIZADA (601px - 1100px)
+     Layout horizontal mantido, mas compacto */
+  @media (max-width: 1100px) {
+    body { padding: 1.2rem 0.5rem; }
+
+    .header-title { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+    .header { margin-bottom: 1.5rem; }
+
+    .char-card-inner { min-height: 520px; }
+
+    /* Textos da ficha menores para caber */
+    .back-name { font-size: 0.8rem; }
+    .back-class { font-size: 0.52rem; }
+    .attr-val { font-size: 1rem; }
+    .vital-label, .vital-value { font-size: 0.6rem; }
+    .combat-val { font-size: 1rem; }
+    .card-back { padding: 0.8rem 0.5rem; gap: 0.5rem; }
+    .section-title { font-size: 0.52rem; }
+
+    /* Classe e hint sempre visíveis */
     .char-class, .click-hint { opacity: 1; transform: none; }
-    .char-desc { max-height: 80px; opacity: 1; }
-    .attrs-grid { grid-template-columns: repeat(3, 1fr); }
+    .char-desc { max-height: 60px; opacity: 1; font-size: 0.75rem; }
+    .char-name { font-size: clamp(0.6rem, 0.9vw, 0.85rem); }
+    .char-info { padding: 0.8rem 0.5rem 1rem; }
+  }
+
+  /* MOBILE / JANELA MUITO ESTREITA (até 600px)
+     Layout vira coluna — um card por linha */
+  @media (max-width: 600px) {
+    body { padding: 1rem 0; }
+
+    .header { margin-bottom: 1.2rem; padding: 0 1rem; }
+    .header-title { font-size: clamp(1.6rem, 8vw, 2.5rem); }
+    .header-eyebrow { font-size: 0.55rem; letter-spacing: 0.3em; }
+    .divider-line { width: 60px; }
+
+    /* Grid vira coluna */
+    .party-grid {
+      flex-direction: column;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* Cada card ocupa a largura toda */
+    .char-card-outer {
+      flex: none !important;
+      width: 100%;
+      border-right: 1px solid rgba(201,168,76,0.12) !important;
+      border-bottom: none;
+    }
+    .char-card-outer:last-child {
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+
+    /* Desativa hover expand no mobile */
+    .char-card-outer:hover { flex: none; }
+
+    /* Card interno: layout horizontal (imagem | info) */
+    .char-card-inner {
+      min-height: 0;
+      height: auto;
+    }
+
+    .card-front {
+      flex-direction: row;
+      position: relative;
+      height: 160px;
+    }
+
+    .char-image-wrap {
+      width: 120px;
+      min-width: 120px;
+      height: 160px;
+      flex: none;
+    }
+
+    .char-image-wrap::after {
+      background: linear-gradient(to right, transparent 60%, rgba(8,6,8,0.95) 100%);
+    }
+
+    .char-info {
+      flex: 1;
+      padding: 0.8rem 0.8rem 0.8rem 0.6rem;
+      border-top: none;
+      border-left: 1px solid rgba(201,168,76,0.1);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+
+    .char-class { opacity: 1; transform: none; font-size: 0.55rem; }
+    .char-name { font-size: 1rem; white-space: normal; }
+    .char-desc { max-height: 60px; opacity: 1; font-size: 0.78rem; margin-top: 0.2rem; }
+    .click-hint { opacity: 1; font-size: 0.5rem; margin-top: 0.2rem; }
+
+    /* Verso (ficha) — ocupa altura total */
+    .card-back {
+      position: relative;
+      transform: none;
+      backface-visibility: visible;
+      -webkit-backface-visibility: visible;
+      height: auto;
+      padding: 1rem;
+      gap: 0.6rem;
+      display: none; /* controlado por JS no mobile */
+    }
+
+    /* No mobile, flip vira show/hide em vez de rotação 3D */
+    .char-card-outer.flipped .card-front { display: none; }
+    .char-card-outer.flipped .card-back { display: flex; }
+    .char-card-outer.flipped .char-card-inner { transform: none !important; }
+
+    .back-name { font-size: 1rem; }
+    .back-class { font-size: 0.6rem; letter-spacing: 0.25em; }
+    .back-level { font-size: 0.6rem; }
+
+    .attrs-grid { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+    .attr-val { font-size: 1.1rem; }
+    .attr-mod { font-size: 0.72rem; }
+
+    .vital-label, .vital-value { font-size: 0.65rem; }
+    .combat-val { font-size: 1.1rem; }
+    .combat-label { font-size: 0.55rem; }
+
+    .back-close { padding-top: 0.3rem; }
+
+    .footer { font-size: 0.5rem; letter-spacing: 0.25em; padding: 0 1rem; }
   }
 </style>
 </head>
@@ -834,20 +958,24 @@
 <footer class="footer">Que a marca os una — e a Tormenta não os separe</footer>
 
 <script>
-  // Flip card ao clicar
   function flipCard(outer) {
     const isFlipped = outer.classList.contains('flipped');
-    // Fecha todos primeiro
     document.querySelectorAll('.char-card-outer.flipped').forEach(c => c.classList.remove('flipped'));
-    // Abre este se estava fechado
-    if (!isFlipped) outer.classList.add('flipped');
+    if (!isFlipped) {
+      outer.classList.add('flipped');
+      if (window.innerWidth <= 600) {
+        setTimeout(() => outer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+      }
+    }
   }
 
-  // Botão "voltar" no verso
   function unflipCard(event, btn) {
     event.stopPropagation();
     const outer = btn.closest('.char-card-outer');
     outer.classList.remove('flipped');
+    if (window.innerWidth <= 600) {
+      setTimeout(() => outer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+    }
   }
 
   /*
