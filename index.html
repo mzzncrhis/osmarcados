@@ -38,7 +38,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 2rem 1rem;
   }
 
@@ -461,6 +461,11 @@
 
   @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
   @keyframes fadeUp   { from { opacity:0; transform:translateY(30px);  } to { opacity:1; transform:translateY(0); } }
+
+  /* No desktop, centraliza verticalmente apenas se couber na tela */
+  @media (min-height: 700px) and (min-width: 1101px) {
+    body { justify-content: center; }
+  }
 
   /* =============================================
      RESPONSIVIDADE — 3 breakpoints
