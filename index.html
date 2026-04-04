@@ -1048,46 +1048,18 @@
       <span class="tl-session-num">Sessão I</span>
       <div class="tl-card">
         <div class="tl-img-wrap">
-          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&q=70" alt="">
+          <img src="https://imageassets/images/epilogoimg.png" alt="">
         </div>
         <div class="tl-body">
-          <span class="tl-date">Mesa 1 · Sessão 1</span>
-          <div class="tl-title">O Começo de Tudo</div>
-          <p class="tl-excerpt">Cinco estranhos se encontram numa taverna à beira da Tormenta. Ninguém sabe ainda que suas marcas os unem.</p>
+          <span class="tl-date">Epilogo</span>
+          <div class="tl-title">O fim está próximo.</div>
+          <p class="tl-excerpt">A quebra de rotina nem sempre é uma coisa boa.</p>
           <span class="tl-read-hint">✦ clique para ler ✦</span>
         </div>
       </div>
     </div>
 
-    <div class="tl-entry right" onclick="openModal('s2')">
-      <span class="tl-session-num">Sessão II</span>
-      <div class="tl-card">
-        <div class="tl-img-wrap">
-          <img src="https://images.unsplash.com/photo-1447069387593-a5de0862481e?w=600&q=70" alt="">
-        </div>
-        <div class="tl-body">
-          <span class="tl-date">Mesa 1 · Sessão 2</span>
-          <div class="tl-title">A Cripta de Malketh</div>
-          <p class="tl-excerpt">Sob as ruínas de Vectora, os marcados descem ao subsolo em busca de respostas. O que encontram é algo muito pior.</p>
-          <span class="tl-read-hint">✦ clique para ler ✦</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="tl-entry" onclick="openModal('s3')">
-      <span class="tl-session-num">Sessão III</span>
-      <div class="tl-card">
-        <div class="tl-img-wrap">
-          <img src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=600&q=70" alt="">
-        </div>
-        <div class="tl-body">
-          <span class="tl-date">Mesa 1 · Sessão 3</span>
-          <div class="tl-title">Sangue no Mercado</div>
-          <p class="tl-excerpt">Um assassinato no coração de Valkaria coloca o grupo no centro de uma conspiração que envolve a própria Ordem.</p>
-          <span class="tl-read-hint">✦ clique para ler ✦</span>
-        </div>
-      </div>
-    </div>
+         
 
   </div>
 </section>
@@ -1193,14 +1165,17 @@
   // ── Timeline modal ─────────────────────────────
   const tlSessions = {
     s1: {
-      session: 'Mesa 1 · Sessão I',
-      title: 'O Começo de Tudo',
+      session: 'Epílogo',
+      title: 'O fim está próximo',
       date: 'Primeiro dia do mês das Estrelas Caídas',
-      img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&q=80',
-      text: `<p>A taverna O Corvo Torto nunca foi um lugar para pessoas honestas. Mas naquela noite, cinco estranhos se encontraram ali por razões que ainda não compreendiam — cada um com uma marca estranha na pele, cada um fugindo de algo ou de alguém.</p>
-<p>Julio Nagaita chegou primeiro, sua túnica de clérigo manchada de poeira da estrada. Lian ocupou o canto mais escuro da sala, os olhos vermelhos varrendo o ambiente antes de se sentar. Derek Tesla entrou quebrando a moldura da porta com o ombro de pedra, seguido de perto por Rannir, cujas serpentes farejavam o ar nervosamente.</p>
-<p>Foi Aeryn quem quebrou o silêncio. Ela apontou para o pulso de cada um, onde as marcas pulsavam com a mesma cadência, como corações sincronizados. <em>"Vocês também sentem, não sentem?"</em></p>
-<p>Antes que qualquer um respondesse, a porta da taverna explodiu para dentro. Três homens encapuzados, e atrás deles, a névoa roxa da Tormenta ganhando as ruas de Valkaria.</p>`
+      img: 'assets/images/epilogofim.png',
+      text: `O sol nascia timidamente sobre o campo, tingindo o horizonte com tons de dourado e lavanda. O orvalho ainda cintilava nas folhas da plantação, e o ar fresco da manhã trazia consigo um perfume de terra molhada. Entre os sulcos bem cuidados da pequena propriedade, uma camponesa se movia com a calma de quem conhece cada palmo daquele chão. Seus dedos, calejados mas delicados, afastavam as ervas daninhas com cuidado, enquanto seu olhar percorria as fileiras de couves e cenouras, satisfeita com o crescimento promissor.
+
+Ao seu lado, um homem trabalhava em silêncio, como sempre fazia. Os ombros, largos, se flexionavam com a familiaridade impar de quem viveu anos de enxada e arado. Ele não era homem de muitas palavras, mas seu sorriso tranquilo, sempre que os olhos dela o encontravam, dizia mais do que qualquer poesia. A rotina era simples, mas cheia daquela quietude que só quem vive longe das cidades conhece.
+
+O céu clareava aos poucos, e os tímidos raios de sol agora já mostravam-se mais imponentes e banhavam mais vividamente toda a terra. A camponesa então ergue seu rosto, sentindo o calor acariciar sua pele, e virou-se para o marido, pronta para sugerir uma pausa para o café da manhã. Ao cruzar seu olhar com o dele, nota um pequeno detalhe em sua testa. Nesse momento, ela respira fundo e profere as palavra mais sinceras de toda sua vida:
+
+- Severino, fudeu.`
     },
     // colocar sessão 2 aqui repetindo o mesmo esquema.
   };
