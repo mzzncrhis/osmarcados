@@ -92,24 +92,75 @@
   .divider-line.right { background: linear-gradient(to left, transparent, var(--gold-dim)); }
   .divider-symbol { color: var(--blood-bright); font-size: 1.2rem; }
 
-  /* PARTY GRID */
-  .party-grid {
+  /* CAROUSEL WRAPPER */
+  .carousel-wrap {
     position: relative;
     z-index: 1;
-    display: flex;
-    flex-direction: row;
-    gap: 0;
     width: 100%;
     max-width: 1400px;
+    display: flex;
     align-items: stretch;
   }
 
-  /* FLIP CARD WRAPPER */
+  /* ARROWS */
+  .arrow-btn {
+    flex-shrink: 0;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+    z-index: 5;
+  }
+  .arrow-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .arrow-btn.left::before  { background: linear-gradient(to right, rgba(201,168,76,0.05), transparent); }
+  .arrow-btn.right::before { background: linear-gradient(to left,  rgba(201,168,76,0.05), transparent); }
+  .arrow-btn:not(.disabled):hover::before { opacity: 1; }
+
+  .arrow-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--gold-dim);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+  }
+  .arrow-btn:not(.disabled):hover svg { stroke: var(--gold); }
+  .arrow-btn.left:not(.disabled):hover  svg { transform: translateX(-2px); }
+  .arrow-btn.right:not(.disabled):hover svg { transform: translateX(2px); }
+  .arrow-btn.disabled { cursor: default; }
+  .arrow-btn.disabled svg { stroke: rgba(122,94,37,0.2); }
+
+  /* PARTY GRID */
+  .party-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    flex: 1;
+    min-width: 0;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  /* CARD OUTER */
   .char-card-outer {
     flex: 1;
     perspective: 1200px;
     transition: flex 0.5s cubic-bezier(0.4,0,0.2,1);
-    animation: fadeUp 0.8s ease both;
     border: 1px solid rgba(201,168,76,0.12);
     border-right: none;
     position: relative;
@@ -118,14 +169,24 @@
   .char-card-outer:hover { flex: 2.2; border-color: rgba(201,168,76,0.25); z-index: 2; }
   .char-card-outer.flipped { flex: 3; border-color: rgba(201,168,76,0.45); z-index: 10; }
 
-  .char-card-outer:nth-child(1) { animation-delay: 0.1s; }
-  .char-card-outer:nth-child(2) { animation-delay: 0.2s; }
-  .char-card-outer:nth-child(3) { animation-delay: 0.3s; }
-  .char-card-outer:nth-child(4) { animation-delay: 0.4s; }
-  .char-card-outer:nth-child(5) { animation-delay: 0.5s; }
-  .char-card-outer:nth-child(6) { animation-delay: 0.6s; }
+  .char-card-outer.hidden { display: none; }
 
-  /* Gold top line on flipped */
+  /* Slide-in animations */
+  .char-card-outer.slide-in-right { animation: slideInRight 0.38s cubic-bezier(0.4,0,0.2,1) both; }
+  .char-card-outer.slide-in-left  { animation: slideInLeft  0.38s cubic-bezier(0.4,0,0.2,1) both; }
+
+  @keyframes slideInRight { from { opacity:0; transform:translateX(24px); } to { opacity:1; transform:translateX(0); } }
+  @keyframes slideInLeft  { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:translateX(0); } }
+
+  /* Animation delays for staggered entrance */
+  .char-card-outer:nth-child(1) { animation-delay: 0s; }
+  .char-card-outer:nth-child(2) { animation-delay: 0.04s; }
+  .char-card-outer:nth-child(3) { animation-delay: 0.08s; }
+  .char-card-outer:nth-child(4) { animation-delay: 0.12s; }
+  .char-card-outer:nth-child(5) { animation-delay: 0.16s; }
+  .char-card-outer:nth-child(6) { animation-delay: 0.20s; }
+
+  /* Gold top accent on flipped */
   .char-card-outer::before {
     content: '';
     position: absolute;
@@ -147,11 +208,8 @@
     transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
     min-height: 640px;
   }
-  .char-card-outer.flipped .char-card-inner {
-    transform: rotateY(180deg);
-  }
+  .char-card-outer.flipped .char-card-inner { transform: rotateY(180deg); }
 
-  /* FRONT FACE */
   .card-front, .card-back {
     position: absolute;
     inset: 0;
@@ -161,11 +219,7 @@
     flex-direction: column;
     overflow: hidden;
   }
-
-  .card-back {
-    transform: rotateY(180deg);
-    background: var(--dark-card);
-  }
+  .card-back { transform: rotateY(180deg); background: var(--dark-card); }
 
   /* Front image */
   .char-image-wrap {
@@ -183,10 +237,7 @@
     transition: transform 0.5s ease, filter 0.5s ease;
     filter: brightness(0.75) saturate(0.85);
   }
-  .char-card-outer:hover .char-image-wrap img {
-    transform: scale(1.04);
-    filter: brightness(0.95) saturate(1.1);
-  }
+  .char-card-outer:hover .char-image-wrap img { transform: scale(1.04); filter: brightness(0.95) saturate(1.1); }
   .char-image-wrap::after {
     content: '';
     position: absolute;
@@ -195,7 +246,6 @@
     pointer-events: none;
   }
 
-  /* Front info */
   .char-info {
     background: var(--dark-card);
     padding: 1.2rem 1rem 1.4rem;
@@ -238,8 +288,6 @@
     transition: max-height 0.5s ease, opacity 0.4s ease 0.15s;
   }
   .char-card-outer:hover .char-desc { max-height: 80px; opacity: 1; }
-
-  /* Hint to click */
   .click-hint {
     font-family: 'Cinzel', serif;
     font-size: 0.55rem;
@@ -252,204 +300,63 @@
   }
   .char-card-outer:hover .click-hint { opacity: 1; }
 
-  /* ===================== BACK / FICHA ===================== */
-  .card-back {
-    padding: 1.2rem 0.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    overflow-y: auto;
-  }
-
-  /* Back header */
-  .back-header {
-    text-align: center;
-    border-bottom: 1px solid rgba(201,168,76,0.2);
-    padding-bottom: 0.7rem;
-  }
-  .back-name {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(0.8rem, 1.3vw, 1.1rem);
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-  }
-  .back-class {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    color: var(--blood-bright);
-    text-transform: uppercase;
-    margin-top: 0.2rem;
-  }
-  .back-level {
-    display: inline-block;
-    margin-top: 0.4rem;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 2px;
-    padding: 0.1rem 0.6rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    color: var(--gold-light);
-    letter-spacing: 0.2em;
-  }
-
-  /* HP / Mana bars */
-  .vitals {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .vital-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-  .vital-label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .vital-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  .vital-value {
-    font-family: 'Cinzel', serif;
-    font-size: 0.68rem;
-    color: var(--text-light);
-    font-weight: 600;
-  }
-  .vital-bar-bg {
-    height: 5px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .vital-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 1s ease 0.5s;
-  }
+  /* BACK */
+  .card-back { padding: 1.2rem 0.8rem; display: flex; flex-direction: column; gap: 0.7rem; overflow-y: auto; }
+  .back-header { text-align: center; border-bottom: 1px solid rgba(201,168,76,0.2); padding-bottom: 0.7rem; }
+  .back-name { font-family: 'Cinzel', serif; font-size: clamp(0.8rem, 1.3vw, 1.1rem); font-weight: 600; color: var(--gold); letter-spacing: 0.05em; }
+  .back-class { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em; color: var(--blood-bright); text-transform: uppercase; margin-top: 0.2rem; }
+  .back-level { display: inline-block; margin-top: 0.4rem; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); border-radius: 2px; padding: 0.1rem 0.6rem; font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--gold-light); letter-spacing: 0.2em; }
+  .vitals { display: flex; flex-direction: column; gap: 0.5rem; }
+  .vital-row { display: flex; flex-direction: column; gap: 0.2rem; }
+  .vital-label-row { display: flex; justify-content: space-between; align-items: center; }
+  .vital-label { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+  .vital-value { font-family: 'Cinzel', serif; font-size: 0.68rem; color: var(--text-light); font-weight: 600; }
+  .vital-bar-bg { height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
+  .vital-bar-fill { height: 100%; border-radius: 3px; }
   .hp-fill { background: linear-gradient(to right, #8b0000, #cc3300); }
   .mp-fill { background: linear-gradient(to right, #1a3a6b, #4a8fd4); }
+  .section-title { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.35em; color: var(--gold-dim); text-transform: uppercase; border-bottom: 1px solid rgba(201,168,76,0.12); padding-bottom: 0.3rem; }
+  .attrs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+  .attr-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.1); border-radius: 3px; padding: 0.4rem 0.3rem; text-align: center; transition: border-color 0.3s ease, background 0.3s ease; }
+  .attr-box:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05); }
+  .attr-name { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.15em; color: var(--blood-bright); text-transform: uppercase; display: block; }
+  .attr-val { font-family: 'Cinzel', serif; font-size: clamp(1rem, 1.5vw, 1.3rem); font-weight: 700; color: var(--text-light); line-height: 1.1; display: block; margin-top: 0.1rem; }
+  .attr-mod { font-family: 'Crimson Text', serif; font-size: 0.72rem; color: var(--gold); display: block; }
+  .combat-row { display: flex; gap: 0.4rem; }
+  .combat-box { flex: 1; background: rgba(139,0,0,0.08); border: 1px solid rgba(139,0,0,0.2); border-radius: 3px; padding: 0.45rem 0.3rem; text-align: center; }
+  .combat-label { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; display: block; }
+  .combat-val { font-family: 'Cinzel', serif; font-size: clamp(1rem, 1.5vw, 1.25rem); font-weight: 700; color: var(--gold-light); display: block; margin-top: 0.1rem; }
+  .back-close { margin-top: auto; padding-top: 0.5rem; text-align: center; cursor: pointer; }
+  .back-close span { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.3em; color: var(--gold-dim); text-transform: uppercase; border: 1px solid rgba(201,168,76,0.15); padding: 0.3rem 0.8rem; border-radius: 2px; transition: color 0.3s, border-color 0.3s, background 0.3s; }
+  .back-close:hover span { color: var(--gold); border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.05); }
 
-  /* Section title */
-  .section-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.35em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(201,168,76,0.12);
-    padding-bottom: 0.3rem;
-  }
-
-  /* Attributes grid */
-  .attrs-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.4rem;
-  }
-  .attr-box {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(201,168,76,0.1);
-    border-radius: 3px;
-    padding: 0.4rem 0.3rem;
-    text-align: center;
-    transition: border-color 0.3s ease, background 0.3s ease;
-  }
-  .attr-box:hover {
-    border-color: rgba(201,168,76,0.3);
-    background: rgba(201,168,76,0.05);
-  }
-  .attr-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.52rem;
-    letter-spacing: 0.15em;
-    color: var(--blood-bright);
-    text-transform: uppercase;
-    display: block;
-  }
-  .attr-val {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(1rem, 1.5vw, 1.3rem);
-    font-weight: 700;
-    color: var(--text-light);
-    line-height: 1.1;
-    display: block;
-    margin-top: 0.1rem;
-  }
-  .attr-mod {
-    font-family: 'Crimson Text', serif;
-    font-size: 0.72rem;
-    color: var(--gold);
-    display: block;
-  }
-
-  /* Defense + Initiative */
-  .combat-row {
+  /* PAGINATION DOTS */
+  .pagination {
+    position: relative;
+    z-index: 1;
     display: flex;
-    gap: 0.4rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+    animation: fadeUp 1s ease 0.6s both;
+    min-height: 12px;
   }
-  .combat-box {
-    flex: 1;
-    background: rgba(139,0,0,0.08);
-    border: 1px solid rgba(139,0,0,0.2);
-    border-radius: 3px;
-    padding: 0.45rem 0.3rem;
-    text-align: center;
-  }
-  .combat-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.5rem;
-    letter-spacing: 0.2em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    display: block;
-  }
-  .combat-val {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(1rem, 1.5vw, 1.25rem);
-    font-weight: 700;
-    color: var(--gold-light);
-    display: block;
-    margin-top: 0.1rem;
-  }
-
-  /* Close button */
-  .back-close {
-    margin-top: auto;
-    padding-top: 0.5rem;
-    text-align: center;
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    opacity: 0.35;
     cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
   }
-  .back-close span {
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.3em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    border: 1px solid rgba(201,168,76,0.15);
-    padding: 0.3rem 0.8rem;
-    border-radius: 2px;
-    transition: color 0.3s, border-color 0.3s, background 0.3s;
-  }
-  .back-close:hover span {
-    color: var(--gold);
-    border-color: rgba(201,168,76,0.4);
-    background: rgba(201,168,76,0.05);
-  }
+  .dot.active { opacity: 1; background: var(--gold); transform: scale(1.5); }
 
   /* FOOTER */
   .footer {
     position: relative;
     z-index: 1;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     font-family: 'Cinzel', serif;
     font-size: 0.6rem;
     letter-spacing: 0.4em;
@@ -462,26 +369,14 @@
   @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
   @keyframes fadeUp   { from { opacity:0; transform:translateY(30px);  } to { opacity:1; transform:translateY(0); } }
 
-  /* No desktop, centraliza verticalmente apenas se couber na tela */
-  @media (min-height: 700px) and (min-width: 1101px) {
-    body { justify-content: center; }
-  }
+  @media (min-height: 700px) and (min-width: 1101px) { body { justify-content: center; } }
 
-  /* =============================================
-     RESPONSIVIDADE — 3 breakpoints
-     ============================================= */
-
-  /* TABLET / JANELA MINIMIZADA (601px - 1100px)
-     Layout horizontal mantido, mas compacto */
+  /* TABLET */
   @media (max-width: 1100px) {
     body { padding: 1.2rem 0.5rem; }
-
     .header-title { font-size: clamp(1.8rem, 5vw, 3.5rem); }
     .header { margin-bottom: 1.5rem; }
-
     .char-card-inner { min-height: 520px; }
-
-    /* Textos da ficha menores para caber */
     .back-name { font-size: 0.8rem; }
     .back-class { font-size: 0.52rem; }
     .attr-val { font-size: 1rem; }
@@ -489,117 +384,52 @@
     .combat-val { font-size: 1rem; }
     .card-back { padding: 0.8rem 0.5rem; gap: 0.5rem; }
     .section-title { font-size: 0.52rem; }
-
-    /* Classe e hint sempre visíveis */
     .char-class, .click-hint { opacity: 1; transform: none; }
     .char-desc { max-height: 60px; opacity: 1; font-size: 0.75rem; }
     .char-name { font-size: clamp(0.6rem, 0.9vw, 0.85rem); }
     .char-info { padding: 0.8rem 0.5rem 1rem; }
+    .arrow-btn { width: 28px; }
+    .arrow-btn svg { width: 14px; height: 14px; }
   }
 
-  /* MOBILE / JANELA MUITO ESTREITA (até 600px)
-     Layout vira coluna — um card por linha */
+  /* MOBILE */
   @media (max-width: 600px) {
     body { padding: 1rem 0; }
-
     .header { margin-bottom: 1.2rem; padding: 0 1rem; }
     .header-title { font-size: clamp(1.6rem, 8vw, 2.5rem); }
     .header-eyebrow { font-size: 0.55rem; letter-spacing: 0.3em; }
     .divider-line { width: 60px; }
-
-    /* Grid vira coluna */
-    .party-grid {
-      flex-direction: column;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    /* Cada card ocupa a largura toda */
-    .char-card-outer {
-      flex: none !important;
-      width: 100%;
-      border-right: 1px solid rgba(201,168,76,0.12) !important;
-      border-bottom: none;
-    }
-    .char-card-outer:last-child {
-      border-bottom: 1px solid rgba(201,168,76,0.12);
-    }
-
-    /* Desativa hover expand no mobile */
+    .carousel-wrap { flex-direction: column; }
+    .arrow-btn { display: none; }
+    .party-grid { flex-direction: column; width: 100%; overflow: visible; }
+    .char-card-outer { flex: none !important; width: 100%; border-right: 1px solid rgba(201,168,76,0.12) !important; border-bottom: none; display: flex !important; }
+    .char-card-outer:last-child { border-bottom: 1px solid rgba(201,168,76,0.12); }
     .char-card-outer:hover { flex: none; }
-
-    /* Card interno: layout horizontal (imagem | info) */
-    .char-card-inner {
-      min-height: 0;
-      height: auto;
-    }
-
-    .card-front {
-      flex-direction: row;
-      position: relative;
-      height: 160px;
-    }
-
-    .char-image-wrap {
-      width: 120px;
-      min-width: 120px;
-      height: 160px;
-      flex: none;
-    }
-
-    .char-image-wrap::after {
-      background: linear-gradient(to right, transparent 60%, rgba(8,6,8,0.95) 100%);
-    }
-
-    .char-info {
-      flex: 1;
-      padding: 0.8rem 0.8rem 0.8rem 0.6rem;
-      border-top: none;
-      border-left: 1px solid rgba(201,168,76,0.1);
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.25rem;
-    }
-
+    .char-card-inner { min-height: 0; height: auto; }
+    .card-front { flex-direction: row; position: relative; height: 160px; }
+    .char-image-wrap { width: 120px; min-width: 120px; height: 160px; flex: none; }
+    .char-image-wrap::after { background: linear-gradient(to right, transparent 60%, rgba(8,6,8,0.95) 100%); }
+    .char-info { flex: 1; padding: 0.8rem 0.8rem 0.8rem 0.6rem; border-top: none; border-left: 1px solid rgba(201,168,76,0.1); text-align: left; display: flex; flex-direction: column; justify-content: center; gap: 0.25rem; }
     .char-class { opacity: 1; transform: none; font-size: 0.55rem; }
     .char-name { font-size: 1rem; white-space: normal; }
     .char-desc { max-height: 60px; opacity: 1; font-size: 0.78rem; margin-top: 0.2rem; }
     .click-hint { opacity: 1; font-size: 0.5rem; margin-top: 0.2rem; }
-
-    /* Verso (ficha) — ocupa altura total */
-    .card-back {
-      position: relative;
-      transform: none;
-      backface-visibility: visible;
-      -webkit-backface-visibility: visible;
-      height: auto;
-      padding: 1rem;
-      gap: 0.6rem;
-      display: none; /* controlado por JS no mobile */
-    }
-
-    /* No mobile, flip vira show/hide em vez de rotação 3D */
+    .card-back { position: relative; transform: none; backface-visibility: visible; -webkit-backface-visibility: visible; height: auto; padding: 1rem; gap: 0.6rem; display: none; }
     .char-card-outer.flipped .card-front { display: none; }
     .char-card-outer.flipped .card-back { display: flex; }
     .char-card-outer.flipped .char-card-inner { transform: none !important; }
-
     .back-name { font-size: 1rem; }
     .back-class { font-size: 0.6rem; letter-spacing: 0.25em; }
     .back-level { font-size: 0.6rem; }
-
     .attrs-grid { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
     .attr-val { font-size: 1.1rem; }
     .attr-mod { font-size: 0.72rem; }
-
     .vital-label, .vital-value { font-size: 0.65rem; }
     .combat-val { font-size: 1.1rem; }
     .combat-label { font-size: 0.55rem; }
-
     .back-close { padding-top: 0.3rem; }
-
     .footer { font-size: 0.5rem; letter-spacing: 0.25em; padding: 0 1rem; }
+    .pagination { margin-top: 0.8rem; }
   }
 </style>
 </head>
@@ -615,362 +445,339 @@
   </div>
 </header>
 
-<div class="party-grid">
+<div class="carousel-wrap">
 
-  <!--
-  ================================================================
-  COMO EDITAR OS PERSONAGENS:
-  Cada bloco abaixo representa um personagem.
-  Altere os valores nos campos marcados com "EDITAR".
-  Os modificadores são calculados automaticamente pelo JavaScript.
-  ================================================================
-  -->
+  <button class="arrow-btn left" id="btn-prev" aria-label="Anterior">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
 
-  <!-- ===== PERSONAGEM 1: Julio Nagaita ===== -->
-  <div class="char-card-outer" onclick="flipCard(this)">
-    <div class="char-card-inner">
-      <div class="card-front">
-        <div class="char-image-wrap">
-          <img src="assets/images/julionagaita.png">
-        </div>
-        <div class="char-info">
-          <p class="char-class">Clérigo Humano</p>
-          <h2 class="char-name">Julio Nagaita</h2>
-          <p class="char-desc">O sangue de Jesus tem poder.</p>
-          <p class="click-hint">✦ clique para ver a ficha ✦</p>
-        </div>
-      </div>
-      <div class="card-back">
-        <div class="back-header">
-          <div class="back-name">Julio Nagaita</div>
-          <div class="back-class">Clérigo Humano</div>
-          <div class="back-level">Nível 3</div> <!-- EDITAR: nível -->
-        </div>
-        <div class="vitals">
-          <!-- EDITAR: hp-current, hp-max, mp-current, mp-max -->
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Pontos de Vida</span>
-              <span class="vital-value">32 / 32</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Mana</span>
-              <span class="vital-value">24 / 24</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div>
+  <div class="party-grid" id="party-grid">
+
+    <!-- ===== PERSONAGEM 1: Julio Nagaita ===== -->
+    <div class="char-card-outer" onclick="flipCard(this)">
+      <div class="char-card-inner">
+        <div class="card-front">
+          <div class="char-image-wrap"><img src="assets/images/julionagaita.png"></div>
+          <div class="char-info">
+            <p class="char-class">Clérigo Humano</p>
+            <h2 class="char-name">Julio Nagaita</h2>
+            <p class="char-desc">O sangue de Jesus tem poder.</p>
+            <p class="click-hint">✦ clique para ver a ficha ✦</p>
           </div>
         </div>
-        <div class="section-title">Atributos</div>
-        <div class="attrs-grid">
-          <!-- EDITAR: valores dos atributos abaixo. O modificador é calculado pelo JS. -->
-          <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
-          <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
-          <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
-          <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val" data-attr="18">18</span><span class="attr-mod">+4</span></div>
-          <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
+        <div class="card-back">
+          <div class="back-header">
+            <div class="back-name">Julio Nagaita</div>
+            <div class="back-class">Clérigo Humano</div>
+            <div class="back-level">Nível 3</div>
+          </div>
+          <div class="vitals">
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Pontos de Vida</span><span class="vital-value">32 / 32</span></div><div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div></div>
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Mana</span><span class="vital-value">24 / 24</span></div><div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="section-title">Atributos</div>
+          <div class="attrs-grid">
+            <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+            <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+            <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+            <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val">18</span><span class="attr-mod">+4</span></div>
+            <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+          </div>
+          <div class="section-title">Combate</div>
+          <div class="combat-row">
+            <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">15</span></div>
+            <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+0</span></div>
+          </div>
+          <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
         </div>
-        <div class="section-title">Combate</div>
-        <div class="combat-row">
-          <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">15</span></div> <!-- EDITAR -->
-          <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+0</span></div> <!-- EDITAR -->
-        </div>
-        <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== PERSONAGEM 2: Lian ===== -->
-  <div class="char-card-outer" onclick="flipCard(this)">
-    <div class="char-card-inner">
-      <div class="card-front">
-        <div class="char-image-wrap">
-          <img src="assets/images/liam.png">
-        </div>
-        <div class="char-info">
-          <p class="char-class">Arcanista Elfa</p>
-          <h2 class="char-name">Lian</h2>
-          <p class="char-desc">Seus olhos vermelhos não enxergam o mundo — enxergam o que o mundo esconde.</p>
-          <p class="click-hint">✦ Clique para ver a ficha ✦</p>
-        </div>
-      </div>
-      <div class="card-back">
-        <div class="back-header">
-          <div class="back-name">Lian</div>
-          <div class="back-class">Arcanista Elfa</div>
-          <div class="back-level">Nível 3</div>
-        </div>
-        <div class="vitals">
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Pontos de Vida</span>
-              <span class="vital-value">22 / 22</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Mana</span>
-              <span class="vital-value">36 / 36</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div>
+    <!-- ===== PERSONAGEM 2: Lian ===== -->
+    <div class="char-card-outer" onclick="flipCard(this)">
+      <div class="char-card-inner">
+        <div class="card-front">
+          <div class="char-image-wrap"><img src="assets/images/liam.png"></div>
+          <div class="char-info">
+            <p class="char-class">Arcanista Elfa</p>
+            <h2 class="char-name">Lian</h2>
+            <p class="char-desc">Seus olhos vermelhos não enxergam o mundo — enxergam o que o mundo esconde.</p>
+            <p class="click-hint">✦ Clique para ver a ficha ✦</p>
           </div>
         </div>
-        <div class="section-title">Atributos</div>
-        <div class="attrs-grid">
-          <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val" data-attr="8">8</span><span class="attr-mod">-1</span></div>
-          <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
-          <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val" data-attr="20">20</span><span class="attr-mod">+5</span></div>
-          <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
-          <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
+        <div class="card-back">
+          <div class="back-header">
+            <div class="back-name">Lian</div>
+            <div class="back-class">Arcanista Elfa</div>
+            <div class="back-level">Nível 3</div>
+          </div>
+          <div class="vitals">
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Pontos de Vida</span><span class="vital-value">22 / 22</span></div><div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div></div>
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Mana</span><span class="vital-value">36 / 36</span></div><div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="section-title">Atributos</div>
+          <div class="attrs-grid">
+            <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val">8</span><span class="attr-mod">-1</span></div>
+            <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+            <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val">20</span><span class="attr-mod">+5</span></div>
+            <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+            <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+          </div>
+          <div class="section-title">Combate</div>
+          <div class="combat-row">
+            <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">12</span></div>
+            <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+2</span></div>
+          </div>
+          <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
         </div>
-        <div class="section-title">Combate</div>
-        <div class="combat-row">
-          <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">12</span></div>
-          <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+2</span></div>
-        </div>
-        <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== PERSONAGEM 3: Derek Tesla ===== -->
-  <div class="char-card-outer" onclick="flipCard(this)">
-    <div class="char-card-inner">
-      <div class="card-front">
-        <div class="char-image-wrap">
-          <img src="assets/images/derek.png">
-        </div>
-        <div class="char-info">
-          <p class="char-class">Guerreiro Lefou</p>
-          <h2 class="char-name">Derek Tesla</h2>
-          <p class="char-desc">A Tormenta consome seu braço. Ele deixa — desde que pare no cotovelo.</p>
-          <p class="click-hint">✦ Clique para ver a ficha ✦</p>
-        </div>
-      </div>
-      <div class="card-back">
-        <div class="back-header">
-          <div class="back-name">Derek Tesla</div>
-          <div class="back-class">Guerreiro Lefou</div>
-          <div class="back-level">Nível 3</div>
-        </div>
-        <div class="vitals">
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Pontos de Vida</span>
-              <span class="vital-value">42 / 42</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Mana</span>
-              <span class="vital-value">6 / 6</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div>
+    <!-- ===== PERSONAGEM 3: Derek Tesla ===== -->
+    <div class="char-card-outer" onclick="flipCard(this)">
+      <div class="char-card-inner">
+        <div class="card-front">
+          <div class="char-image-wrap"><img src="assets/images/derek.png"></div>
+          <div class="char-info">
+            <p class="char-class">Guerreiro Lefou</p>
+            <h2 class="char-name">Derek Tesla</h2>
+            <p class="char-desc">A Tormenta consome seu braço. Ele deixa — desde que pare no cotovelo.</p>
+            <p class="click-hint">✦ Clique para ver a ficha ✦</p>
           </div>
         </div>
-        <div class="section-title">Atributos</div>
-        <div class="attrs-grid">
-          <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val" data-attr="18">18</span><span class="attr-mod">+4</span></div>
-          <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
-          <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val" data-attr="16">16</span><span class="attr-mod">+3</span></div>
-          <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val" data-attr="8">8</span><span class="attr-mod">-1</span></div>
-          <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
+        <div class="card-back">
+          <div class="back-header">
+            <div class="back-name">Derek Tesla</div>
+            <div class="back-class">Guerreiro Lefou</div>
+            <div class="back-level">Nível 3</div>
+          </div>
+          <div class="vitals">
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Pontos de Vida</span><span class="vital-value">42 / 42</span></div><div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div></div>
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Mana</span><span class="vital-value">6 / 6</span></div><div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="section-title">Atributos</div>
+          <div class="attrs-grid">
+            <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val">18</span><span class="attr-mod">+4</span></div>
+            <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+            <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val">16</span><span class="attr-mod">+3</span></div>
+            <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val">8</span><span class="attr-mod">-1</span></div>
+            <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+          </div>
+          <div class="section-title">Combate</div>
+          <div class="combat-row">
+            <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">17</span></div>
+            <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+1</span></div>
+          </div>
+          <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
         </div>
-        <div class="section-title">Combate</div>
-        <div class="combat-row">
-          <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">17</span></div>
-          <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+1</span></div>
-        </div>
-        <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== PERSONAGEM 4: Rannir Curie ===== -->
-  <div class="char-card-outer" onclick="flipCard(this)">
-    <div class="char-card-inner">
-      <div class="card-front">
-        <div class="char-image-wrap">
-          <img src="assets/images/rannir.png">
-        </div>
-        <div class="char-info">
-          <p class="char-class">Guerreiro Medusa</p>
-          <h2 class="char-name">Rannir Curie</h2>
-          <p class="char-desc">Cada serpente em sua cabeça já foi um inimigo. As demais aprenderam a lição.</p>
-          <p class="click-hint">✦ Clique para ver a ficha ✦</p>
-        </div>
-      </div>
-      <div class="card-back">
-        <div class="back-header">
-          <div class="back-name">Rannir Curie</div>
-          <div class="back-class">Guerreiro Medusa</div>
-          <div class="back-level">Nível 3</div>
-        </div>
-        <div class="vitals">
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Pontos de Vida</span>
-              <span class="vital-value">40 / 40</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Mana</span>
-              <span class="vital-value">6 / 6</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div>
+    <!-- ===== PERSONAGEM 4: Rannir Curie ===== -->
+    <div class="char-card-outer" onclick="flipCard(this)">
+      <div class="char-card-inner">
+        <div class="card-front">
+          <div class="char-image-wrap"><img src="assets/images/rannir.png"></div>
+          <div class="char-info">
+            <p class="char-class">Guerreiro Medusa</p>
+            <h2 class="char-name">Rannir Curie</h2>
+            <p class="char-desc">Cada serpente em sua cabeça já foi um inimigo. As demais aprenderam a lição.</p>
+            <p class="click-hint">✦ Clique para ver a ficha ✦</p>
           </div>
         </div>
-        <div class="section-title">Atributos</div>
-        <div class="attrs-grid">
-          <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val" data-attr="16">16</span><span class="attr-mod">+3</span></div>
-          <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
-          <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
-          <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
-          <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
+        <div class="card-back">
+          <div class="back-header">
+            <div class="back-name">Rannir Curie</div>
+            <div class="back-class">Guerreiro Medusa</div>
+            <div class="back-level">Nível 3</div>
+          </div>
+          <div class="vitals">
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Pontos de Vida</span><span class="vital-value">40 / 40</span></div><div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div></div>
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Mana</span><span class="vital-value">6 / 6</span></div><div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="section-title">Atributos</div>
+          <div class="attrs-grid">
+            <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val">16</span><span class="attr-mod">+3</span></div>
+            <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+            <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+            <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+            <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+          </div>
+          <div class="section-title">Combate</div>
+          <div class="combat-row">
+            <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">16</span></div>
+            <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+2</span></div>
+          </div>
+          <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
         </div>
-        <div class="section-title">Combate</div>
-        <div class="combat-row">
-          <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">16</span></div>
-          <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+2</span></div>
-        </div>
-        <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== PERSONAGEM 5: Aeryn Elaris ===== -->
-  <div class="char-card-outer" onclick="flipCard(this)">
-    <div class="char-card-inner">
-      <div class="card-front">
-        <div class="char-image-wrap">
-          <img src="assets/images/aeryn.png">
-           </div>
-        <div class="char-info">
-          <p class="char-class">Bruxa Qareen</p>
-          <h2 class="char-name">Aeryn Elaris</h2>
-          <p class="char-desc">Eu não sei o que vai acontecer, mas vai funcionar... Eu acho.</p>
-          <p class="click-hint">✦ Clique para ver a ficha ✦</p>
-        </div>
-      </div>
-      <div class="card-back">
-        <div class="back-header">
-          <div class="back-name">Aeryn Elaris</div>
-          <div class="back-class">Bruxa Qareen</div>
-          <div class="back-level">Nível 3</div>
-        </div>
-        <div class="vitals">
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Pontos de Vida</span>
-              <span class="vital-value">24 / 24</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Mana</span>
-              <span class="vital-value">32 / 32</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div>
+    <!-- ===== PERSONAGEM 5: Aeryn Elaris ===== -->
+    <div class="char-card-outer" onclick="flipCard(this)">
+      <div class="char-card-inner">
+        <div class="card-front">
+          <div class="char-image-wrap"><img src="assets/images/aeryn.png"></div>
+          <div class="char-info">
+            <p class="char-class">Bruxa Qareen</p>
+            <h2 class="char-name">Aeryn Elaris</h2>
+            <p class="char-desc">Eu não sei o que vai acontecer, mas vai funcionar... Eu acho.</p>
+            <p class="click-hint">✦ Clique para ver a ficha ✦</p>
           </div>
         </div>
-        <div class="section-title">Atributos</div>
-        <div class="attrs-grid">
-          <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val" data-attr="8">8</span><span class="attr-mod">-1</span></div>
-          <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
-          <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val" data-attr="16">16</span><span class="attr-mod">+3</span></div>
-          <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val" data-attr="14">14</span><span class="attr-mod">+2</span></div>
-          <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val" data-attr="18">18</span><span class="attr-mod">+4</span></div>
+        <div class="card-back">
+          <div class="back-header">
+            <div class="back-name">Aeryn Elaris</div>
+            <div class="back-class">Bruxa Qareen</div>
+            <div class="back-level">Nível 3</div>
+          </div>
+          <div class="vitals">
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Pontos de Vida</span><span class="vital-value">24 / 24</span></div><div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div></div>
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Mana</span><span class="vital-value">32 / 32</span></div><div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="section-title">Atributos</div>
+          <div class="attrs-grid">
+            <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val">8</span><span class="attr-mod">-1</span></div>
+            <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+            <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val">16</span><span class="attr-mod">+3</span></div>
+            <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val">14</span><span class="attr-mod">+2</span></div>
+            <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val">18</span><span class="attr-mod">+4</span></div>
+          </div>
+          <div class="section-title">Combate</div>
+          <div class="combat-row">
+            <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">13</span></div>
+            <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+2</span></div>
+          </div>
+          <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
         </div>
-        <div class="section-title">Combate</div>
-        <div class="combat-row">
-          <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">13</span></div>
-          <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+2</span></div>
-        </div>
-        <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
       </div>
     </div>
-  </div>
 
-  <!-- ===== PERSONAGEM 6: Rico Patachoca ===== -->
-  <div class="char-card-outer" onclick="flipCard(this)">
-    <div class="char-card-inner">
-      <div class="card-front">
-        <div class="char-image-wrap">
-          <img src="assets/images/patachoca.png">
-        </div>
-        <div class="char-info">
-          <p class="char-class">Arcanista Humano</p>
-          <h2 class="char-name">Rico Patachoca</h2>
-          <p class="char-desc">Pequeno demais para ser levado a sério. Grande demais para ser ignorado.</p>
-          <p class="click-hint">✦ Clique para ver a ficha ✦</p>
-        </div>
-      </div>
-      <div class="card-back">
-        <div class="back-header">
-          <div class="back-name">Rico Patachoca</div>
-          <div class="back-class">Arcanista Humano</div>
-          <div class="back-level">Nível 3</div>
-        </div>
-        <div class="vitals">
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Pontos de Vida</span>
-              <span class="vital-value">20 / 20</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div>
-          </div>
-          <div class="vital-row">
-            <div class="vital-label-row">
-              <span class="vital-label">Mana</span>
-              <span class="vital-value">38 / 38</span>
-            </div>
-            <div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div>
+    <!-- ===== PERSONAGEM 6: Rico Patachoca ===== -->
+    <div class="char-card-outer" onclick="flipCard(this)">
+      <div class="char-card-inner">
+        <div class="card-front">
+          <div class="char-image-wrap"><img src="assets/images/patachoca.png"></div>
+          <div class="char-info">
+            <p class="char-class">Arcanista Humano</p>
+            <h2 class="char-name">Rico Patachoca</h2>
+            <p class="char-desc">Pequeno demais para ser levado a sério. Grande demais para ser ignorado.</p>
+            <p class="click-hint">✦ Clique para ver a ficha ✦</p>
           </div>
         </div>
-        <div class="section-title">Atributos</div>
-        <div class="attrs-grid">
-          <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val" data-attr="8">8</span><span class="attr-mod">-1</span></div>
-          <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
-          <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val" data-attr="20">20</span><span class="attr-mod">+5</span></div>
-          <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val" data-attr="10">10</span><span class="attr-mod">+0</span></div>
-          <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val" data-attr="12">12</span><span class="attr-mod">+1</span></div>
+        <div class="card-back">
+          <div class="back-header">
+            <div class="back-name">Rico Patachoca</div>
+            <div class="back-class">Arcanista Humano</div>
+            <div class="back-level">Nível 3</div>
+          </div>
+          <div class="vitals">
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Pontos de Vida</span><span class="vital-value">20 / 20</span></div><div class="vital-bar-bg"><div class="vital-bar-fill hp-fill" style="width:100%"></div></div></div>
+            <div class="vital-row"><div class="vital-label-row"><span class="vital-label">Mana</span><span class="vital-value">38 / 38</span></div><div class="vital-bar-bg"><div class="vital-bar-fill mp-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="section-title">Atributos</div>
+          <div class="attrs-grid">
+            <div class="attr-box"><span class="attr-name">FOR</span><span class="attr-val">8</span><span class="attr-mod">-1</span></div>
+            <div class="attr-box"><span class="attr-name">DES</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+            <div class="attr-box"><span class="attr-name">CON</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">INT</span><span class="attr-val">20</span><span class="attr-mod">+5</span></div>
+            <div class="attr-box"><span class="attr-name">SAB</span><span class="attr-val">10</span><span class="attr-mod">+0</span></div>
+            <div class="attr-box"><span class="attr-name">CAR</span><span class="attr-val">12</span><span class="attr-mod">+1</span></div>
+          </div>
+          <div class="section-title">Combate</div>
+          <div class="combat-row">
+            <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">11</span></div>
+            <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+1</span></div>
+          </div>
+          <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
         </div>
-        <div class="section-title">Combate</div>
-        <div class="combat-row">
-          <div class="combat-box"><span class="combat-label">Defesa</span><span class="combat-val">11</span></div>
-          <div class="combat-box"><span class="combat-label">Iniciativa</span><span class="combat-val">+1</span></div>
-        </div>
-        <div class="back-close" onclick="unflipCard(event, this)"><span>↩ voltar</span></div>
       </div>
     </div>
-  </div>
 
-</div><!-- end party-grid -->
+  </div><!-- end party-grid -->
+
+  <button class="arrow-btn right" id="btn-next" aria-label="Próximo">
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
+</div><!-- end carousel-wrap -->
+
+<div class="pagination" id="pagination"></div>
 
 <footer class="footer">Que a marca os una — e a Tormenta não os separe</footer>
 
 <script>
+  const VISIBLE  = 6;
+  const grid     = document.getElementById('party-grid');
+  const btnPrev  = document.getElementById('btn-prev');
+  const btnNext  = document.getElementById('btn-next');
+  const pagEl    = document.getElementById('pagination');
+
+  let offset = 0;
+
+  function cards() { return Array.from(grid.querySelectorAll('.char-card-outer')); }
+  function total() { return cards().length; }
+  function pages() { return Math.max(1, Math.ceil(total() / VISIBLE)); }
+  function curPage() { return Math.floor(offset / VISIBLE); }
+
+  function buildDots() {
+    pagEl.innerHTML = '';
+    if (pages() <= 1) return;
+    for (let i = 0; i < pages(); i++) {
+      const d = document.createElement('span');
+      d.className = 'dot' + (i === curPage() ? ' active' : '');
+      d.addEventListener('click', () => navigate(i * VISIBLE));
+      pagEl.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    pagEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === curPage()));
+  }
+
+  function updateArrows() {
+    btnPrev.classList.toggle('disabled', offset === 0);
+    btnNext.classList.toggle('disabled', offset + VISIBLE >= total());
+  }
+
+  function render(dir) {
+    const animClass = dir >= 0 ? 'slide-in-right' : 'slide-in-left';
+    cards().forEach((c, i) => {
+      const visible = i >= offset && i < offset + VISIBLE;
+      c.classList.remove('hidden', 'slide-in-right', 'slide-in-left');
+      if (visible) {
+        void c.offsetWidth;
+        c.classList.add(animClass);
+      } else {
+        c.classList.add('hidden');
+        c.classList.remove('flipped');
+      }
+    });
+    updateArrows();
+    updateDots();
+  }
+
+  function navigate(newOffset) {
+    const dir = newOffset >= offset ? 1 : -1;
+    offset = Math.max(0, Math.min(newOffset, total() - VISIBLE));
+    render(dir);
+  }
+
+  btnPrev.addEventListener('click', () => { if (offset > 0) navigate(offset - VISIBLE); });
+  btnNext.addEventListener('click', () => { if (offset + VISIBLE < total()) navigate(offset + VISIBLE); });
+
   function flipCard(outer) {
     const isFlipped = outer.classList.contains('flipped');
-    document.querySelectorAll('.char-card-outer.flipped').forEach(c => c.classList.remove('flipped'));
+    cards().forEach(c => c.classList.remove('flipped'));
     if (!isFlipped) {
       outer.classList.add('flipped');
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 600)
         setTimeout(() => outer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
-      }
     }
   }
 
@@ -978,22 +785,12 @@
     event.stopPropagation();
     const outer = btn.closest('.char-card-outer');
     outer.classList.remove('flipped');
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= 600)
       setTimeout(() => outer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
-    }
   }
 
-  /*
-  ================================================================
-  COMO ATUALIZAR OS ATRIBUTOS:
-  Localize o personagem pelo comentário (ex: PERSONAGEM 1).
-  Altere o número dentro de data-attr="XX" e também o texto visível.
-  O modificador é calculado como: Math.floor((valor - 10) / 2)
-  Exemplos:
-    8  → -1  |  10 → +0  |  12 → +1
-    14 → +2  |  16 → +3  |  18 → +4  |  20 → +5
-  ================================================================
-  */
+  buildDots();
+  render(1);
 </script>
 
 </body>
