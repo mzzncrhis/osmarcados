@@ -178,7 +178,6 @@
   @keyframes slideInRight { from { opacity:0; transform:translateX(24px); } to { opacity:1; transform:translateX(0); } }
   @keyframes slideInLeft  { from { opacity:0; transform:translateX(-24px); } to { opacity:1; transform:translateX(0); } }
 
-  /* Animation delays for staggered entrance */
   .char-card-outer:nth-child(1) { animation-delay: 0s; }
   .char-card-outer:nth-child(2) { animation-delay: 0.04s; }
   .char-card-outer:nth-child(3) { animation-delay: 0.08s; }
@@ -186,7 +185,6 @@
   .char-card-outer:nth-child(5) { animation-delay: 0.16s; }
   .char-card-outer:nth-child(6) { animation-delay: 0.20s; }
 
-  /* Gold top accent on flipped */
   .char-card-outer::before {
     content: '';
     position: absolute;
@@ -199,7 +197,6 @@
   }
   .char-card-outer.flipped::before { opacity: 1; }
 
-  /* FLIP INNER */
   .char-card-inner {
     position: relative;
     width: 100%;
@@ -221,7 +218,6 @@
   }
   .card-back { transform: rotateY(180deg); background: var(--dark-card); }
 
-  /* Front image */
   .char-image-wrap {
     position: relative;
     width: 100%;
@@ -386,38 +382,14 @@
     align-items: center;
   }
 
-  .tl-section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  .tl-eyebrow {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.5em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-  .tl-section-title {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(1.5rem, 4vw, 2.6rem);
-    font-weight: 700;
-    color: var(--gold);
-    text-shadow: 0 0 30px rgba(201,168,76,0.3);
-    letter-spacing: 0.06em;
-  }
-  .tl-section-divider {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    justify-content: center;
-    margin-top: 0.8rem;
-  }
+  .tl-section-header { text-align: center; margin-bottom: 3rem; }
+  .tl-eyebrow { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.5em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .tl-section-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.5rem, 4vw, 2.6rem); font-weight: 700; color: var(--gold); text-shadow: 0 0 30px rgba(201,168,76,0.3); letter-spacing: 0.06em; }
+  .tl-section-divider { display: flex; align-items: center; gap: 0.8rem; justify-content: center; margin-top: 0.8rem; }
   .tl-div-line { height: 1px; width: 80px; background: linear-gradient(to right, transparent, var(--gold-dim)); }
   .tl-div-line.r { background: linear-gradient(to left, transparent, var(--gold-dim)); }
   .tl-div-sym { color: var(--blood-bright); font-size: 0.9rem; }
 
-  /* Linha central */
   .timeline {
     position: relative;
     width: 100%;
@@ -434,7 +406,6 @@
     transform: translateX(-50%);
   }
 
-  /* Entrada */
   .tl-entry {
     display: flex;
     justify-content: flex-end;
@@ -443,13 +414,8 @@
     position: relative;
     cursor: pointer;
   }
-  .tl-entry.right {
-    justify-content: flex-start;
-    padding-right: 0;
-    padding-left: calc(50% + 2.5rem);
-  }
+  .tl-entry.right { justify-content: flex-start; padding-right: 0; padding-left: calc(50% + 2.5rem); }
 
-  /* Nó */
   .tl-entry::before {
     content: '';
     position: absolute;
@@ -465,7 +431,6 @@
   }
   .tl-entry:hover::before { box-shadow: 0 0 18px rgba(201,168,76,0.8); }
 
-  /* Linha horizontal */
   .tl-entry::after {
     content: '';
     position: absolute;
@@ -475,13 +440,8 @@
     width: calc(50% - 1.8rem);
     right: calc(50% + 0.45rem);
   }
-  .tl-entry.right::after {
-    background: linear-gradient(to right, var(--gold-dim), transparent);
-    left: calc(50% + 0.45rem);
-    right: auto;
-  }
+  .tl-entry.right::after { background: linear-gradient(to right, var(--gold-dim), transparent); left: calc(50% + 0.45rem); right: auto; }
 
-  /* Número da sessão */
   .tl-session-num {
     position: absolute;
     left: 50%;
@@ -496,7 +456,6 @@
     z-index: 3;
   }
 
-  /* Card */
   .tl-card {
     width: 100%;
     max-width: 340px;
@@ -506,75 +465,54 @@
     overflow: hidden;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  .tl-entry:hover .tl-card {
-    border-color: rgba(201,168,76,0.4);
-    border-top-color: var(--gold);
-    box-shadow: 0 4px 30px rgba(201,168,76,0.08);
-  }
+  .tl-entry:hover .tl-card { border-color: rgba(201,168,76,0.4); border-top-color: var(--gold); box-shadow: 0 4px 30px rgba(201,168,76,0.08); }
 
-  .tl-img-wrap {
-    width: 100%; height: 130px;
-    overflow: hidden;
-    position: relative;
-  }
-  .tl-img-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: brightness(0.7) saturate(0.8);
-    transition: transform 0.5s ease, filter 0.4s ease;
-    display: block;
-  }
+  .tl-img-wrap { width: 100%; height: 130px; overflow: hidden; position: relative; }
+  .tl-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: brightness(0.7) saturate(0.8); transition: transform 0.5s ease, filter 0.4s ease; display: block; }
   .tl-entry:hover .tl-img-wrap img { transform: scale(1.05); filter: brightness(0.9) saturate(1.0); }
-  .tl-img-wrap::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 40%, rgba(13,10,14,0.85) 100%);
-  }
+  .tl-img-wrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(13,10,14,0.85) 100%); }
 
   .tl-body { padding: 0.8rem 1rem 1rem; }
-  .tl-date {
-    font-family: 'Cinzel', serif;
-    font-size: 0.46rem;
-    letter-spacing: 0.3em;
-    color: var(--blood-bright);
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-    display: block;
-  }
-  .tl-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.03em;
-    line-height: 1.3;
-    transition: color 0.25s ease;
-  }
+  .tl-date { font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 0.3em; color: var(--blood-bright); text-transform: uppercase; margin-bottom: 0.3rem; display: block; }
+  .tl-title { font-family: 'Cinzel', serif; font-size: 0.88rem; font-weight: 600; color: var(--gold); letter-spacing: 0.03em; line-height: 1.3; transition: color 0.25s ease; }
   .tl-entry:hover .tl-title { color: var(--gold-light); }
-  .tl-excerpt {
-    font-family: 'Crimson Text', serif;
-    font-style: italic;
-    font-size: 0.84rem;
-    color: var(--text-dim);
-    line-height: 1.55;
-    margin-top: 0.4rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .tl-read-hint {
-    font-family: 'Cinzel', serif;
-    font-size: 0.44rem;
-    letter-spacing: 0.28em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-top: 0.55rem;
-    display: block;
-    transition: color 0.25s ease;
-  }
+  .tl-excerpt { font-family: 'Crimson Text', serif; font-style: italic; font-size: 0.84rem; color: var(--text-dim); line-height: 1.55; margin-top: 0.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .tl-read-hint { font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 0.28em; color: var(--gold-dim); text-transform: uppercase; margin-top: 0.55rem; display: block; transition: color 0.25s ease; }
   .tl-entry:hover .tl-read-hint { color: var(--gold); }
+
+  /* ── Miniaturas de personagens — card ── */
+  .tl-avatars { display: flex; flex-direction: row; margin-top: 0.65rem; }
+  .tl-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.3);
+    margin-right: -7px;
+    background: var(--dark);
+    flex-shrink: 0;
+    transition: margin 0.2s ease, border-color 0.2s ease;
+  }
+  .tl-avatar:last-child { margin-right: 0; }
+  .tl-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: brightness(0.85) saturate(0.8); display: block; }
+  .tl-avatars:hover .tl-avatar { margin-right: 3px; border-color: rgba(201,168,76,0.6); }
+
+  /* ── Miniaturas de personagens — modal ── */
+  .modal-avatars-wrap { margin-top: 0.7rem; }
+  .modal-avatars-label { font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 0.22em; color: var(--gold-dim); text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+  .modal-avatars { display: flex; flex-direction: row; }
+  .modal-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.35);
+    margin-right: -9px;
+    background: var(--dark);
+    flex-shrink: 0;
+    transition: margin 0.2s ease, border-color 0.2s ease;
+  }
+  .modal-avatar:last-child { margin-right: 0; }
+  .modal-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: brightness(0.9) saturate(0.85); display: block; }
+  .modal-avatars:hover .modal-avatar { margin-right: 4px; border-color: rgba(201,168,76,0.6); }
 
   /* ── Modal ── */
   .modal-overlay {
@@ -607,82 +545,24 @@
   }
   .modal-overlay.open .modal-box { transform: translateY(0); }
 
-  .modal-img {
-    width: 100%; height: 200px;
-    object-fit: cover;
-    object-position: center;
-    filter: brightness(0.65) saturate(0.85);
-    display: block;
-  }
+  .modal-img { width: 100%; height: 200px; object-fit: cover; object-position: center; filter: brightness(0.65) saturate(0.85); display: block; }
   .modal-body { padding: 1.6rem 1.8rem 2rem; }
-  .modal-session {
-    font-family: 'Cinzel', serif;
-    font-size: 0.5rem;
-    letter-spacing: 0.4em;
-    color: var(--blood-bright);
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 0.35rem;
-  }
-  .modal-title {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(1.1rem, 3vw, 1.55rem);
-    color: var(--gold);
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-  }
-  .modal-date {
-    font-family: 'Cinzel', serif;
-    font-size: 0.48rem;
-    letter-spacing: 0.25em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    margin-top: 0.4rem;
-    display: block;
-  }
-  .modal-divider {
-    height: 1px;
-    background: linear-gradient(to right, var(--gold-dim), transparent);
-    margin: 1rem 0;
-  }
-  .modal-text {
-    font-family: 'Crimson Text', serif;
-    font-size: 1.05rem;
-    color: var(--text-light);
-    line-height: 1.8;
-  }
+  .modal-session { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.4em; color: var(--blood-bright); text-transform: uppercase; display: block; margin-bottom: 0.35rem; }
+  .modal-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.1rem, 3vw, 1.55rem); color: var(--gold); letter-spacing: 0.04em; line-height: 1.2; }
+  .modal-date { font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.25em; color: var(--text-dim); text-transform: uppercase; margin-top: 0.4rem; display: block; }
+  .modal-divider { height: 1px; background: linear-gradient(to right, var(--gold-dim), transparent); margin: 1rem 0; }
+  .modal-text { font-family: 'Crimson Text', serif; font-size: 1.05rem; color: var(--text-light); line-height: 1.8; }
   .modal-text p + p { margin-top: 0.9rem; }
-  .modal-close {
-    position: absolute;
-    top: 0.8rem; right: 1rem;
-    background: none;
-    border: none;
-    color: var(--gold-dim);
-    font-family: 'Cinzel', serif;
-    font-size: 0.48rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 0.3rem 0.4rem;
-    transition: color 0.25s;
-  }
+  .modal-close { position: absolute; top: 0.8rem; right: 1rem; background: none; border: none; color: var(--gold-dim); font-family: 'Cinzel', serif; font-size: 0.48rem; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; padding: 0.3rem 0.4rem; transition: color 0.25s; }
   .modal-close:hover { color: var(--gold); }
 
   /* Timeline mobile */
   @media (max-width: 600px) {
     .timeline-section { margin-top: 3rem; padding: 0; }
     .timeline::before { left: 1rem; }
-    .tl-entry, .tl-entry.right {
-      justify-content: flex-start;
-      padding-left: 3rem;
-      padding-right: 0.5rem;
-    }
+    .tl-entry, .tl-entry.right { justify-content: flex-start; padding-left: 3rem; padding-right: 0.5rem; }
     .tl-entry::before, .tl-entry.right::before { left: 1rem; }
-    .tl-entry::after, .tl-entry.right::after {
-      left: 1.45rem; right: auto;
-      width: 1.2rem;
-      background: linear-gradient(to right, var(--gold-dim), transparent);
-    }
+    .tl-entry::after, .tl-entry.right::after { left: 1.45rem; right: auto; width: 1.2rem; background: linear-gradient(to right, var(--gold-dim), transparent); }
     .tl-session-num { left: 1rem; }
     .tl-card { max-width: 100%; }
     .modal-body { padding: 1rem 1.1rem 1.5rem; }
@@ -1034,7 +914,7 @@
 
   <div class="tl-section-header">
     <p class="tl-eyebrow">Crônicas da Campanha</p>
-    <h2 class="tl-section-title">O Livro das Marcas</h2>
+    <h2 class="tl-section-title">Resumo das Mesas</h2>
     <div class="tl-section-divider">
       <span class="tl-div-line"></span>
       <span class="tl-div-sym">✦</span>
@@ -1048,7 +928,7 @@
       <span class="tl-session-num">Sessão I</span>
       <div class="tl-card">
         <div class="tl-img-wrap">
-          <img src="assets/images/epilogoimg.jpeg" alt="">
+          <img src="images/epilogoimg.jpeg" alt="">
         </div>
         <div class="tl-body">
           <span class="tl-date">Epilogo</span>
@@ -1058,23 +938,6 @@
         </div>
       </div>
     </div>
-
-    <div class="tl-entry right" onclick="openModal('s2')">
-      <span class="tl-session-num">Teste</span>
-      <div class="tl-card">
-        <div class="tl-img-wrap">
-          <img src="assets/images/epilogoimg.jpeg" alt="">
-        </div>
-        <div class="tl-body">
-          <span class="tl-date">Epilogo</span>
-          <div class="tl-title">O fim está próximo.</div>
-          <p class="tl-excerpt">A quebra de rotina nem sempre é uma coisa boa.</p>
-          <span class="tl-read-hint">✦ clique para ler ✦</span>
-        </div>
-      </div>
-    </div>
-
-         
 
   </div>
 </section>
@@ -1088,6 +951,7 @@
       <span class="modal-session" id="modal-session"></span>
       <div class="modal-title" id="modal-title"></div>
       <span class="modal-date" id="modal-date"></span>
+      <div id="modal-avatars-wrap" class="modal-avatars-wrap"></div>
       <div class="modal-divider"></div>
       <div class="modal-text" id="modal-text"></div>
     </div>
@@ -1183,43 +1047,37 @@
       session: 'Epílogo',
       title: 'O fim está próximo',
       date: 'Primeiro dia do mês das Estrelas Caídas',
-      img: 'assets/images/epilogoimg.jpeg',
-      text: `<p>O sol nascia timidamente sobre o campo, tingindo o horizonte com tons de dourado e lavanda. O orvalho ainda cintilava nas folhas da plantação, e o ar fresco da manhã trazia consigo um perfume de terra molhada. Entre os sulcos bem cuidados da pequena propriedade, uma camponesa se movia com a calma de quem conhece cada palmo daquele chão. Seus dedos, calejados mas delicados, afastavam as ervas daninhas com cuidado, enquanto seu olhar percorria as fileiras de couves e cenouras, satisfeita com o crescimento promissor.
-</p
+      img: 'assets/images/epilogofim.jpeg',
+      personagens: [
+        // Adicione aqui os personagens que participaram desta sessão:
 
-<p>Ao seu lado, um homem trabalhava em silêncio, como sempre fazia. Os ombros, largos, se flexionavam com a familiaridade impar de quem viveu anos de enxada e arado. Ele não era homem de muitas palavras, mas seu sorriso tranquilo, sempre que os olhos dela o encontravam, dizia mais do que qualquer poesia. A rotina era simples, mas cheia daquela quietude que só quem vive longe das cidades conhece.
-</p>
-
-<p>O céu clareava aos poucos, e os tímidos raios de sol agora já mostravam-se mais imponentes e banhavam mais vividamente toda a terra. A camponesa então ergue seu rosto, sentindo o calor acariciar sua pele, e virou-se para o marido, pronta para sugerir uma pausa para o café da manhã. Ao cruzar seu olhar com o dele, nota um pequeno detalhe em sua testa. Nesse momento, ela respira fundo e profere as palavra mais sinceras de toda sua vida:
-</p>
-
-<p>- Severino, fudeu.</p>`
-     
-
-     
+       
+         { nome: 'Julio Nagaita', img: 'assets/images/julionagaita.png' },
+         { nome: 'Lian',          img: 'assets/images/liam.png' },
+      ],
+      text: `O sol nascia timidamente sobre o campo, tingindo o horizonte com tons de dourado e lavanda. O orvalho ainda cintilava nas folhas da plantação, e o ar fresco da manhã trazia consigo um perfume de terra molhada. Entre os sulcos bem cuidados da pequena propriedade, uma camponesa se movia com a calma de quem conhece cada palmo daquele chão. Seus dedos, calejados mas delicados, afastavam as ervas daninhas com cuidado, enquanto seu olhar percorria as fileiras de couves e cenouras, satisfeita com o crescimento promissor.
+Ao seu lado, um homem trabalhava em silêncio, como sempre fazia. Os ombros, largos, se flexionavam com a familiaridade impar de quem viveu anos de enxada e arado. Ele não era homem de muitas palavras, mas seu sorriso tranquilo, sempre que os olhos dela o encontravam, dizia mais do que qualquer poesia. A rotina era simples, mas cheia daquela quietude que só quem vive longe das cidades conhece.
+O céu clareava aos poucos, e os tímidos raios de sol agora já mostravam-se mais imponentes e banhavam mais vividamente toda a terra. A camponesa então ergue seu rosto, sentindo o calor acariciar sua pele, e virou-se para o marido, pronta para sugerir uma pausa para o café da manhã. Ao cruzar seu olhar com o dele, nota um pequeno detalhe em sua testa. Nesse momento, ela respira fundo e profere as palavra mais sinceras de toda sua vida:
+- Severino, fudeu.`
     },
-
-   s2: {
-      session: 'Teste',
-      title: 'O fim está próximo',
-      date: 'Primeiro dia do mês das Estrelas Caídas',
-      img: 'assets/images/epilogoimg.jpeg',
-      text: `<p>O sol nascia timidamente sobre o campo, tingindo o horizonte com tons de dourado e lavanda. O orvalho ainda cintilava nas folhas da plantação, e o ar fresco da manhã trazia consigo um perfume de terra molhada. Entre os sulcos bem cuidados da pequena propriedade, uma camponesa se movia com a calma de quem conhece cada palmo daquele chão. Seus dedos, calejados mas delicados, afastavam as ervas daninhas com cuidado, enquanto seu olhar percorria as fileiras de couves e cenouras, satisfeita com o crescimento promissor.
-</p
-
-<p>Ao seu lado, um homem trabalhava em silêncio, como sempre fazia. Os ombros, largos, se flexionavam com a familiaridade impar de quem viveu anos de enxada e arado. Ele não era homem de muitas palavras, mas seu sorriso tranquilo, sempre que os olhos dela o encontravam, dizia mais do que qualquer poesia. A rotina era simples, mas cheia daquela quietude que só quem vive longe das cidades conhece.
-</p>
-
-<p>O céu clareava aos poucos, e os tímidos raios de sol agora já mostravam-se mais imponentes e banhavam mais vividamente toda a terra. A camponesa então ergue seu rosto, sentindo o calor acariciar sua pele, e virou-se para o marido, pronta para sugerir uma pausa para o café da manhã. Ao cruzar seu olhar com o dele, nota um pequeno detalhe em sua testa. Nesse momento, ela respira fundo e profere as palavra mais sinceras de toda sua vida:
-</p>
-
-<p>- Severino, fudeu.</p>`
-     
-
-     
-    },
-    // colocar sessão 3, 4, etc aqui repetindo o mesmo esquema.
+    // colocar sessão 2 aqui repetindo o mesmo esquema.
   };
+
+  // ── Injeta miniaturas nos cards da timeline ────
+  document.querySelectorAll('.tl-entry[onclick]').forEach(entry => {
+    const match = entry.getAttribute('onclick').match(/openModal\('(\w+)'\)/);
+    if (!match) return;
+    const s = tlSessions[match[1]];
+    if (!s || !s.personagens || s.personagens.length === 0) return;
+    const body = entry.querySelector('.tl-body');
+    if (!body) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'tl-avatars';
+    wrap.innerHTML = s.personagens.map(p =>
+      `<div class="tl-avatar" title="${p.nome}"><img src="${p.img}" alt="${p.nome}"></div>`
+    ).join('');
+    body.appendChild(wrap);
+  });
 
   function openModal(id) {
     const s = tlSessions[id];
@@ -1228,7 +1086,26 @@
     document.getElementById('modal-title').textContent   = s.title;
     document.getElementById('modal-date').textContent    = s.date;
     document.getElementById('modal-img').src             = s.img;
-    document.getElementById('modal-text').innerHTML      = s.text;
+    document.getElementById('modal-text').innerHTML = s.text
+      .replace(/<br\s*\/?>/gi, '\n')
+      .split(/\n+/)
+      .map(p => p.trim())
+      .filter(p => p.length > 0)
+      .map(p => `<p>${p}</p>`)
+      .join('');
+    // Miniaturas no modal
+    const avatarsWrap = document.getElementById('modal-avatars-wrap');
+    if (s.personagens && s.personagens.length > 0) {
+      avatarsWrap.innerHTML =
+        `<span class="modal-avatars-label">Participantes</span>
+         <div class="modal-avatars">
+           ${s.personagens.map(p =>
+             `<div class="modal-avatar" title="${p.nome}"><img src="${p.img}" alt="${p.nome}"></div>`
+           ).join('')}
+         </div>`;
+    } else {
+      avatarsWrap.innerHTML = '';
+    }
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
